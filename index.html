@@ -3,33 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מחשבון היוון מקיף לחברי קיבוץ</title>
+    <title>מחשבון היוון מקיף לחברי קיבוץ - AVI 1</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f0f8ff; }
-        .container { background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #2c3e50; }
-        .bsd { text-align: center; font-size: 24px; margin-bottom: 20px; color: #2c3e50; }
-        label { display: block; margin-top: 10px; font-weight: bold; }
-        input, select, button { width: 100%; padding: 8px; margin-top: 5px; }
-        button { background-color: #3498db; color: white; border: none; cursor: pointer; margin-top: 20px; }
-        button:hover { background-color: #2980b9; }
-        #result { margin-top: 20px; background-color: #e8f6fd; padding: 15px; border-radius: 5px; }
-        .highlight { font-weight: bold; color: #e74c3c; }
-        .orange-highlight { background-color: #ffa500; padding: 2px 5px; border-radius: 3px; }
-        .total { font-size: 1.2em; border-top: 2px solid #3498db; padding-top: 10px; margin-top: 10px; }
-        .note { font-style: italic; color: #7f8c8d; margin-top: 20px; }
-        #clearButton { background-color: #e74c3c; }
-        #clearButton:hover { background-color: #c0392b; }
-        .external-link { margin-top: 20px; text-align: center; }
-        .external-link a { color: #3498db; text-decoration: none; }
-        .disclaimer { background-color: #f39c12; color: white; padding: 10px; border-radius: 5px; margin-top: 20px; text-align: center; font-weight: bold; }
-        .tooltip { font-size: 14px; color: #7f8c8d; margin-top: 5px; }
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: #f0f8ff; 
+        }
+        .container { 
+            background-color: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+        }
+        h1 { 
+            text-align: center; 
+            color: #2c3e50; 
+        }
+        .bsd { 
+            text-align: center; 
+            font-size: 24px; 
+            margin-bottom: 20px; 
+            color: #2c3e50; 
+        }
+        label { 
+            display: block; 
+            margin-top: 10px; 
+            font-weight: bold; 
+        }
+        input, select, button { 
+            width: 100%; 
+            padding: 8px; 
+            margin-top: 5px; 
+        }
+        button { 
+            background-color: #3498db; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            margin-top: 20px; 
+        }
+        button:hover { 
+            background-color: #2980b9; 
+        }
+        #result { 
+            margin-top: 20px; 
+            background-color: #e8f6fd; 
+            padding: 15px; 
+            border-radius: 5px; 
+        }
+        .highlight { 
+            font-weight: bold; 
+            color: #e74c3c; 
+        }
+        .orange-highlight { 
+            background-color: #ffa500; 
+            padding: 2px 5px; 
+            border-radius: 3px; 
+        }
+        .total { 
+            font-size: 1.2em; 
+            border-top: 2px solid #3498db; 
+            padding-top: 10px; 
+            margin-top: 10px; 
+        }
+        .note { 
+            font-style: italic; 
+            color: #7f8c8d; 
+            margin-top: 20px; 
+        }
+        #clearButton { 
+            background-color: #e74c3c; 
+        }
+        #clearButton:hover { 
+            background-color: #c0392b; 
+        }
+        .external-link { 
+            margin-top: 20px; 
+            text-align: center; 
+        }
+        .external-link a { 
+            color: #3498db; 
+            text-decoration: none; 
+        }
+        .disclaimer { 
+            background-color: #f39c12; 
+            color: white; 
+            padding: 10px; 
+            border-radius: 5px; 
+            margin-top: 20px; 
+            text-align: center; 
+            font-weight: bold; 
+        }
+        .explanation { 
+            background-color: #e8f6fd; 
+            padding: 10px; 
+            border-radius: 5px; 
+            margin-top: 5px; 
+            font-size: 14px; 
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="bsd">בס"ד</div>
-        <h1>מחשבון היוון מקיף לחברי קיבוץ</h1>
+        <h1>מחשבון היוון מקיף לחברי קיבוץ - AVI 1</h1>
         
         <div class="disclaimer">
             שימו לב: מחשבון זה נועד לצרכי סימולציה והערכה בלבד. התוצאות אינן מחייבות ואינן מהוות תחליף לייעוץ מקצועי או להנחיות רשמיות של רמ"י או הקיבוץ.
@@ -37,18 +117,22 @@
 
         <label for="propertyValue">ערך הנכס (בש"ח):</label>
         <input type="number" id="propertyValue" placeholder="הכנס את ערך הנכס">
+        <div class="explanation">הכניסו את הערך המשוער של הנכס שלכם בשקלים חדשים.</div>
         
         <label for="propertySize">גודל הנכס הקיים (במ"ר):</label>
         <input type="number" id="propertySize" value="160">
+        <div class="explanation">הכניסו את גודל הנכס הקיים שלכם במטרים רבועים. ברירת המחדל היא 160 מ"ר.</div>
         
         <label for="requestedSize">שטח מבוקש לבנייה (במ"ר):</label>
         <input type="number" id="requestedSize" value="160" max="370">
+        <div class="explanation">הכניסו את השטח שאתם מבקשים לבנות, עד 370 מ"ר. ברירת המחדל היא 160 מ"ר.</div>
         
         <label for="status">סטטוס חבר:</label>
         <select id="status">
             <option value="veteran">ותיק</option>
             <option value="new">חדש</option>
         </select>
+        <div class="explanation">בחרו את הסטטוס שלכם בקיבוץ - ותיק או חדש. זה משפיע על אחוז דמי ההיוון.</div>
         
         <label for="paymentOption">אפשרות תשלום:</label>
         <select id="paymentOption">
@@ -56,26 +140,32 @@
             <option value="deferred">תשלום נדחה</option>
             <option value="vatOnly">מע"מ בלבד</option>
         </select>
+        <div class="explanation">בחרו את אפשרות התשלום המועדפת עליכם.</div>
         
         <label for="deferYears">מספר שנים לדחייה:</label>
         <input type="number" id="deferYears" value="0" min="0">
+        <div class="explanation">אם בחרתם בתשלום נדחה, הכניסו את מספר השנים שברצונכם לדחות את התשלום.</div>
         
         <label for="interestRate">אחוז ריבית שנתית:</label>
         <input type="number" id="interestRate" value="3" step="0.1" min="0">
+        <div class="explanation">הכניסו את אחוז הריבית השנתית. ברירת המחדל היא 3%.</div>
         
         <label for="baseIndex">מדד בסיס:</label>
         <input type="number" id="baseIndex" value="100" step="0.1">
+        <div class="explanation">הכניסו את מדד הבסיס. אם אינכם בטוחים, השאירו את ערך ברירת המחדל 100.</div>
         
         <label for="currentIndex">מדד נוכחי:</label>
         <input type="number" id="currentIndex" value="100" step="0.1">
+        <div class="explanation">הכניסו את המדד הנוכחי. אם אינכם בטוחים, השאירו את ערך ברירת המחדל 100.</div>
         
         <label for="ifDate">תאריך "אם" (אופציונלי):</label>
         <input type="date" id="ifDate">
-        <div class="tooltip">תאריך "אם" מאפשר לחשב את ההיוון לתאריך עתידי.</div>
+        <div class="explanation">
+            הכניסו תאריך עתידי אם אתם רוצים לבדוק כיצד הדחייה תשפיע על הסכום לתשלום. השאירו ריק לחישוב לפי התאריך הנוכחי.
+        </div>
         
         <button onclick="calculate()">חשב</button>
         <button id="clearButton" onclick="clearFields()">נקה</button>
-        <button onclick="copyToWhatsApp()">העתק תוצאות לווצאפ</button>
         
         <div id="result"></div>
         
@@ -90,47 +180,100 @@
         }
 
         function calculate() {
-            // קוד החישוב נשאר זהה
+            const propertyValue = parseFloat(document.getElementById('propertyValue').value) || 0;
+            const propertySize = parseFloat(document.getElementById('propertySize').value) || 160;
+            const requestedSize = Math.min(parseFloat(document.getElementById('requestedSize').value) || 160, 370);
+            const status = document.getElementById('status').value;
+            const paymentOption = document.getElementById('paymentOption').value;
+            const deferYears = parseInt(document.getElementById('deferYears').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) / 100 || 0.03;
+            const baseIndex = parseFloat(document.getElementById('baseIndex').value) || 100;
+            const currentIndex = parseFloat(document.getElementById('currentIndex').value) || 100;
+            const ifDate = document.getElementById('ifDate').value;
+            
+            const calculationDate = ifDate || new Date().toISOString().split('T')[0];
+            
+            let fee = 0;
+            let feePercentage = 0;
+            if (status === 'veteran') {
+                if (requestedSize <= 160) {
+                    feePercentage = 29.25;
+                    fee = propertyValue * (feePercentage / 100);
+                } else {
+                    const baseArea = 160;
+                    const additionalArea = requestedSize - baseArea;
+                    fee = (propertyValue * 0.2925 * (baseArea / requestedSize)) + 
+                          (propertyValue * 0.33 * (additionalArea / requestedSize));
+                    feePercentage = (fee / propertyValue) * 100;
+                }
+            } else {
+                feePercentage = 91;
+                fee = propertyValue * (feePercentage / 100);
+            }
+            
+            const indexAdjustment = currentIndex / baseIndex;
+            const adjustedFee = fee * indexAdjustment;
+            const indexationAmount = adjustedFee - fee;
+            
+            const vat = adjustedFee * 0.17;
+            const totalFee = adjustedFee + vat;
+            
+            let immediatePayment = 0;
+            let deferredPayment = 0;
+            let interestAmount = 0;
+            
+            switch(paymentOption) {
+                case 'immediate':
+                    immediatePayment = totalFee;
+                    break;
+                case 'deferred':
+                    deferredPayment = totalFee * Math.pow(1 + interestRate, deferYears);
+                    interestAmount = deferredPayment - totalFee;
+                    break;
+                case 'vatOnly':
+                    immediatePayment = vat;
+                    deferredPayment = adjustedFee * Math.pow(1 + interestRate, deferYears);
+                    interestAmount = deferredPayment - adjustedFee;
+                    break;
+            }
+            
+            const indexationPercentage = ((indexAdjustment - 1) * 100).toFixed(2);
+            const totalAddition = indexationAmount + interestAmount;
+            const totalAdditionPercentage = (totalAddition / fee * 100).toFixed(2);
 
             let resultHTML = `<h2>תוצאות החישוב:</h2>
                 <p>תאריך החישוב: ${calculationDate}</p>
-                <p>דמי היוון לרמ"י (לפני הצמדה ומע"מ): ${formatNumber(fee.toFixed(2))} ₪</p>
+                <p>דמי היוון לרמ"י (לפני הצמדה ומע"מ): ${formatNumber(fee.toFixed(2))} ₪ (${feePercentage.toFixed(2)}% מערך הנכס)</p>
                 <p><span class="orange-highlight">תוספת בגין הצמדה: ${formatNumber(indexationAmount.toFixed(2))} ₪ (${indexationPercentage}% תוספת)</span></p>
                 <p>סכום לאחר הצמדה: ${formatNumber(adjustedFee.toFixed(2))} ₪</p>
-                <p>מע"מ: ${formatNumber(vat.toFixed(2))} ₪ (${(vat/adjustedFee*100).toFixed(2)}% מהסכום לאחר הצמדה)</p>
+                <p>מע"מ: ${formatNumber(vat.toFixed(2))} ₪ (17% מהסכום לאחר הצמדה)</p>
                 <p class="highlight">סה"כ דמי היוון לרמ"י (כולל הצמדה ומע"מ): ${formatNumber(totalFee.toFixed(2))} ₪</p>`;
             
             if (paymentOption === 'immediate') {
                 resultHTML += `<p class="total">סה"כ תשלום מיידי: ${formatNumber(immediatePayment.toFixed(2))} ₪</p>`;
             } else if (paymentOption === 'deferred') {
+                resultHTML += `<p class="total">סה"כ תשלום נדחה: ${formatNumber(deferredPayment.toFixed(2))} ₪</p>`;
+            } else if (paymentOption === 'vatOnly') {
                 resultHTML += `
-                    <p class="total">סה"כ תשלום נדחה (לאחר ${deferYears} שנים): ${formatNumber(deferredPayment.toFixed(2))} ₪</p>
-                    <p><span class="orange-highlight">תוספת בגין ריבית: ${formatNumber(interestAmount.toFixed(2))} ₪ (${(interestAmount/totalFee*100).toFixed(2)}% תוספת)</span></p>
-                `;
-            } else {
-                resultHTML += `
-                    <p>תשלום מיידי (מע"מ בלבד): ${formatNumber(immediatePayment.toFixed(2))} ₪</p>
-                    <p class="total">תשלום נדחה (לאחר ${deferYears} שנים): ${formatNumber(deferredPayment.toFixed(2))} ₪</p>
-                    <p><span class="orange-highlight">תוספת בגין ריבית: ${formatNumber(interestAmount.toFixed(2))} ₪ (${(interestAmount/adjustedFee*100).toFixed(2)}% תוספת)</span></p>
-                `;
+                    <p class="total">סה"כ תשלום מע"מ בלבד: ${formatNumber(immediatePayment.toFixed(2))} ₪</p>
+                    <p class="total">סה"כ תשלום נדחה (לאחר מע"מ): ${formatNumber(deferredPayment.toFixed(2))} ₪</p>`;
             }
-
-            resultHTML += `
-                <p class="note">
-                    <strong>הערה חשובה:</strong> סך התוספת בגין דחייה (הצמדה וריבית) היא ${formatNumber(totalAddition.toFixed(2))} ₪, 
-                    המהווה ${totalAdditionPercentage}% מסכום ההיוון המקורי.
-                </p>
-            `;
             
             document.getElementById('result').innerHTML = resultHTML;
         }
 
         function clearFields() {
-            // קוד הניקוי נשאר זהה
-        }
-
-        function copyToWhatsApp() {
-            // קוד ההעתקה לווצאפ נשאר זהה
+            document.getElementById('propertyValue').value = '';
+            document.getElementById('propertySize').value = '160';
+            document.getElementById('requestedSize').value = '160';
+            document.getElementById('status').value = 'veteran';
+            document.getElementById('paymentOption').value = 'immediate';
+            document.getElementById('deferYears').value = '0';
+            document.getElementById('interestRate').value = '3';
+            document.getElementById('baseIndex').value = '100';
+            document.getElementById('currentIndex').value = '100';
+            document.getElementById('ifDate').value = '';
+            document.getElementById('result').innerHTML = '';
         }
     </script>
 </body>
