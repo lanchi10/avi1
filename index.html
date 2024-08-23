@@ -63,6 +63,10 @@
             padding: 2px 5px; 
             border-radius: 3px; 
         }
+        .green-highlight {
+            font-weight: bold;
+            color: #27ae60;
+        }
         .total { 
             font-size: 1.2em; 
             border-top: 2px solid #3498db; 
@@ -166,6 +170,7 @@
         
         <button onclick="calculate()">חשב</button>
         <button id="clearButton" onclick="clearFields()">נקה</button>
+        <button onclick="copyToClipboard()">העתק לווטסאפ</button>
         
         <div id="result"></div>
         
@@ -252,14 +257,24 @@
             if (paymentOption === 'immediate') {
                 resultHTML += `<p class="total">סה"כ תשלום מיידי: ${formatNumber(immediatePayment.toFixed(2))} ₪</p>`;
             } else if (paymentOption === 'deferred') {
-                resultHTML += `<p class="total">סה"כ תשלום נדחה: ${formatNumber(deferredPayment.toFixed(2))} ₪</p>`;
+                resultHTML += `<p class="total">סה"כ תשלום נדחה (לאחר ${deferYears} שנים): ${formatNumber(deferredPayment.toFixed(2))} ₪</p>`;
+                resultHTML += `<p class="highlight">תוספת בגין ריבית: ${formatNumber(interestAmount.toFixed(2))} ₪ (${(interestAmount / totalFee * 100).toFixed(2)}% תוספת)</p>`;
             } else if (paymentOption === 'vatOnly') {
-                resultHTML += `
-                    <p class="total">סה"כ תשלום מע"מ בלבד: ${formatNumber(immediatePayment.toFixed(2))} ₪</p>
-                    <p class="total">סה"כ תשלום נדחה (לאחר מע"מ): ${formatNumber(deferredPayment.toFixed(2))} ₪</p>`;
+                resultHTML += `<p class="total">סה"כ תשלום מע"מ בלבד: ${formatNumber(immediatePayment.toFixed(2))} ₪</p>`;
+                resultHTML += `<p class="total">סה"כ תשלום נדחה (לאחר מע"מ): ${formatNumber(deferredPayment.toFixed(2))} ₪</p>`;
             }
+
+            const deferredSummary = `
+            <span class="green-highlight">*סיכום תחשיב:*</span>
+            <span class="green-highlight">- *ריבית:* ${formatNumber(interestAmount.toFixed(2))} ₪</span>
+            <span class="green-highlight">- *הצמדה:* ${formatNumber(indexationAmount.toFixed(2))} ₪</span>
+            <span class="green-highlight">- *סה"כ דחייה:* ${formatNumber(totalAddition.toFixed(2))} ₪ (${totalAdditionPercentage}% מסכום ההיוון המקורי)</span>
+            `;
+            
+            resultHTML += `<p class="note">${deferredSummary}</p>`;
             
             document.getElementById('result').innerHTML = resultHTML;
+            prepareWhatsAppMessage(resultHTML);
         }
 
         function clearFields() {
@@ -274,6 +289,31 @@
             document.getElementById('currentIndex').value = '100';
             document.getElementById('ifDate').value = '';
             document.getElementById('result').innerHTML = '';
+        }
+
+        function prepareWhatsAppMessage(content) {
+            const plainTextContent = content
+                .replace(/<\/?[^>]+(>|$)/g, "\n")
+                .replace(/&nbsp;/g, " ")
+                .replace(/\s+/g, " ")
+                .replace(/,/g, "")
+                .replace(/<h2>/g, "")
+                .replace(/<\/h2>/g, "\n")
+                .replace(/<p>/g, "")
+                .replace(/<\/p>/g, "\n")
+                .replace(/<span class="green-highlight">/g, "")
+                .replace(/<\/span>/g, "")
+                .trim();
+
+            return plainTextContent;
+        }
+
+        function copyToClipboard() {
+            const result = document.getElementById('result').innerHTML;
+            const whatsAppMessage = prepareWhatsAppMessage(result);
+            navigator.clipboard.writeText(whatsAppMessage)
+                .then(() => alert("התחשיב הועתק בהצלחה לווטסאפ!"))
+                .catch(err => alert("שגיאה בהעתקה: " + err));
         }
     </script>
 </body>
