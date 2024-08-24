@@ -67,6 +67,10 @@
             font-weight: bold;
             color: #27ae60;
         }
+        .manual-fee-highlight {
+            color: #8e44ad;
+            font-weight: bold;
+        }
         .total { 
             font-size: 1.2em; 
             border-top: 2px solid #3498db; 
@@ -123,6 +127,10 @@
         <input type="number" id="propertyValue" placeholder="הכנס את ערך הנכס">
         <div class="explanation">הכניסו את הערך המשוער של הנכס שלכם בשקלים חדשים.</div>
         
+        <label for="manualFee" class="manual-fee-highlight">דמי היוון לרמ"י (לפני הצמדה ומע"מ) - ידני:</label>
+        <input type="number" id="manualFee" placeholder="הכנס דמי היוון לרמ"י">
+        <div class="explanation manual-fee-highlight">ניתן להזין את דמי ההיוון לרמ"י ידנית. אפשרות זו מיועדת לבדיקה של ריבית והצמדה ללא חישוב מתוך ערך הנכס.</div>
+        
         <label for="propertySize">גודל הנכס הקיים (במ"ר):</label>
         <input type="number" id="propertySize" value="160">
         <div class="explanation">הכניסו את גודל הנכס הקיים שלכם במטרים רבועים. ברירת המחדל היא 160 מ"ר.</div>
@@ -136,7 +144,7 @@
             <option value="veteran">ותיק</option>
             <option value="new">חדש</option>
         </select>
-        <div class="explanation">בחרו את הסטטוס שלכם בקיבוץ - ותיק או חדש. זה משפיע על אחוז דמי ההיוון.</div>
+        <div class="explanation">בחרו את הסטטוס שלכם בקיבוץ - ותיק או חדש. זה משפיע על אחוז דמי ההיוון אם לא הזנתם דמי היוון ידנית.</div>
         
         <label for="paymentOption">אפשרות תשלום:</label>
         <select id="paymentOption">
@@ -162,18 +170,14 @@
         <input type="number" id="currentIndex" value="100" step="0.1">
         <div class="explanation">הכניסו את המדד הנוכחי. אם אינכם בטוחים, השאירו את ערך ברירת המחדל 100.</div>
         
-        <label for="ifDate">תאריך "אם" (אופציונלי):</label>
-        <input type="date" id="ifDate">
-        <div class="explanation">
-            הכניסו תאריך עתידי אם אתם רוצים לבדוק כיצד הדחייה תשפיע על הסכום לתשלום. השאירו ריק לחישוב לפי התאריך הנוכחי.
-        </div>
-        
         <button onclick="calculate()">חשב</button>
         <button id="clearButton" onclick="clearFields()">נקה</button>
         <button onclick="copyToClipboard()">העתק לווטסאפ</button>
         
         <div id="result"></div>
         
+        <div class="explanation">*כפתור "העתק לווטסאפ" מיועד להעתיק את תוצאות החישוב לזיכרון, כך שניתן להדביק אותן בצורה מסודרת בווטסאפ, במייל או בטקסט אחר.*</div>
+
         <div class="external-link">
             <a href="https://www.hilan.co.il/%D7%9E%D7%A8%D7%9B%D7%96-%D7%99%D7%93%D7%A2/%D7%9E%D7%97%D7%A9%D7%91%D7%95%D7%A0%D7%99%D7%9D/%D7%98%D7%91%D7%9C%D7%AA-%D7%94%D7%A6%D7%9E%D7%93%D7%94-%D7%9C%D7%9E%D7%93%D7%93/" target="_blank">לחץ כאן לבדיקת מדדים במחשבון הצמדה למדד של חילן</a>
         </div>
@@ -186,6 +190,7 @@
 
         function calculate() {
             const propertyValue = parseFloat(document.getElementById('propertyValue').value) || 0;
+            const manualFee = parseFloat(document.getElementById('manualFee').value);
             const propertySize = parseFloat(document.getElementById('propertySize').value) || 160;
             const requestedSize = Math.min(parseFloat(document.getElementById('requestedSize').value) || 160, 370);
             const status = document.getElementById('status').value;
@@ -194,28 +199,49 @@
             const interestRate = parseFloat(document.getElementById('interestRate').value) / 100 || 0.03;
             const baseIndex = parseFloat(document.getElementById('baseIndex').value) || 100;
             const currentIndex = parseFloat(document.getElementById('currentIndex').value) || 100;
-            const ifDate = document.getElementById('ifDate').value;
-            
-            const calculationDate = ifDate || new Date().toISOString().split('T')[0];
-            
+
             let fee = 0;
             let feePercentage = 0;
-            if (status === 'veteran') {
-                if (requestedSize <= 160) {
-                    feePercentage = 29.25;
-                    fee = propertyValue * (feePercentage / 100);
+            let estimatedPropertyValue = 0;
+
+            if (manualFee) {
+                fee = manualFee;
+
+                // הערכת ערך הנכס על פי דמי ההיוון
+                if (status === 'veteran') {
+                    if (requestedSize <= 160) {
+                        feePercentage = 29.25;
+                    } else {
+                        const baseArea = 160;
+                        const additionalArea = requestedSize - baseArea;
+                        feePercentage = (0.2925 * (baseArea / requestedSize)) + (0.33 * (additionalArea / requestedSize));
+                    }
                 } else {
-                    const baseArea = 160;
-                    const additionalArea = requestedSize - baseArea;
-                    fee = (propertyValue * 0.2925 * (baseArea / requestedSize)) + 
-                          (propertyValue * 0.33 * (additionalArea / requestedSize));
-                    feePercentage = (fee / propertyValue) * 100;
+                    feePercentage = 91;
                 }
+
+                estimatedPropertyValue = fee / (feePercentage / 100);
+
             } else {
-                feePercentage = 91;
-                fee = propertyValue * (feePercentage / 100);
+                if (status === 'veteran') {
+                    if (requestedSize <= 160) {
+                        feePercentage = 29.25;
+                        fee = propertyValue * (feePercentage / 100);
+                    } else {
+                        const baseArea = 160;
+                        const additionalArea = requestedSize - baseArea;
+                        fee = (propertyValue * 0.2925 * (baseArea / requestedSize)) + 
+                              (propertyValue * 0.33 * (additionalArea / requestedSize));
+                        feePercentage = (fee / propertyValue) * 100;
+                    }
+                } else {
+                    feePercentage = 91;
+                    fee = propertyValue * (feePercentage / 100);
+                }
             }
-            
+
+            const feeSource = manualFee ? "נתון מוקלד ידנית" : "חישוב מתוך ערך הנכס";
+
             const indexAdjustment = currentIndex / baseIndex;
             const adjustedFee = fee * indexAdjustment;
             const indexationAmount = adjustedFee - fee;
@@ -247,8 +273,13 @@
             const totalAdditionPercentage = (totalAddition / fee * 100).toFixed(2);
 
             let resultHTML = `<h2>תוצאות החישוב:</h2>
-                <p>תאריך החישוב: ${calculationDate}</p>
-                <p>דמי היוון לרמ"י (לפני הצמדה ומע"מ): ${formatNumber(fee.toFixed(2))} ₪ (${feePercentage.toFixed(2)}% מערך הנכס)</p>
+                <p>דמי היוון לרמ"י (לפני הצמדה ומע"מ): ${formatNumber(fee.toFixed(2))} ₪ (${feeSource})</p>`;
+
+            if (manualFee) {
+                resultHTML += `<p>ערך הנכס המשוער לפי דמי היוון מוזנים: ${formatNumber(estimatedPropertyValue.toFixed(2))} ₪</p>`;
+            }
+
+            resultHTML += `
                 <p><span class="orange-highlight">תוספת בגין הצמדה: ${formatNumber(indexationAmount.toFixed(2))} ₪ (${indexationPercentage}% תוספת)</span></p>
                 <p>סכום לאחר הצמדה: ${formatNumber(adjustedFee.toFixed(2))} ₪</p>
                 <p>מע"מ: ${formatNumber(vat.toFixed(2))} ₪ (17% מהסכום לאחר הצמדה)</p>
@@ -279,6 +310,7 @@
 
         function clearFields() {
             document.getElementById('propertyValue').value = '';
+            document.getElementById('manualFee').value = '';
             document.getElementById('propertySize').value = '160';
             document.getElementById('requestedSize').value = '160';
             document.getElementById('status').value = 'veteran';
@@ -287,7 +319,6 @@
             document.getElementById('interestRate').value = '3';
             document.getElementById('baseIndex').value = '100';
             document.getElementById('currentIndex').value = '100';
-            document.getElementById('ifDate').value = '';
             document.getElementById('result').innerHTML = '';
         }
 
@@ -303,7 +334,11 @@
                 .replace(/<\/p>/g, "\n")
                 .replace(/<span class="green-highlight">/g, "")
                 .replace(/<\/span>/g, "")
-                .trim();
+                .trim()
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line !== "")
+                .join('\n');
 
             return plainTextContent;
         }
@@ -312,7 +347,7 @@
             const result = document.getElementById('result').innerHTML;
             const whatsAppMessage = prepareWhatsAppMessage(result);
             navigator.clipboard.writeText(whatsAppMessage)
-                .then(() => alert("התחשיב הועתק בהצלחה לווטסאפ!"))
+                .then(() => alert("התחשיב הועתק בהצלחה! כעת ניתן להדביק אותו בווטסאפ, מייל או טקסט אחר."))
                 .catch(err => alert("שגיאה בהעתקה: " + err));
         }
     </script>
